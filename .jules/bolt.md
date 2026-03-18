@@ -1,0 +1,3 @@
+## 2024-05-24 - Pre-allocate LOH Arrays in Shared Memory Reader
+**Learning:** The application processes high-frequency (~60fps) uncompressed video frames (approx 1.2MB each) from shared memory. Allocating these large byte arrays (`byte[] rawBuffer` and `byte[] processedBuffer`) inside the `while(true)` high-frequency loop causes severe Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation in C#, drastically impacting performance.
+**Action:** Always pre-allocate and reuse large byte arrays outside of high-frequency processing loops (like `ReadSharedMemory`) to avoid massive LOH allocations per frame.
