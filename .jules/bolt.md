@@ -1,0 +1,3 @@
+## 2024-05-24 - Pre-allocating Large Buffers for High-Frequency Shared Memory Video Frames
+**Learning:** Recreating `MemoryMappedViewAccessor` and >1MB `byte[]` arrays inside a 60fps video processing loop causes severe Large Object Heap (LOH) fragmentation and Garbage Collection pressure, leading to frame drops and memory leaks.
+**Action:** Always pre-allocate large managed buffers and `MemoryMappedViewAccessor` instances outside of high-frequency execution loops.
