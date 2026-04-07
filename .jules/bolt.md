@@ -1,0 +1,3 @@
+## 2024-05-24 - Pre-allocating LOH buffers for high-frequency video frames
+**Learning:** In C# WinForms applications processing high-frequency uncompressed video frames (e.g., ~60fps, 1.2MB each) from shared memory, allocating large byte arrays inside the processing loop causes severe Large Object Heap (LOH) fragmentation and Garbage Collector (GC) pressure.
+**Action:** Always pre-allocate large byte arrays (e.g., `rawBuffer`, `processedBuffer`) and `MemoryMappedViewAccessor` instances outside the `while(true)` loop and reuse them to avoid LOH allocations and ensure consistent frame processing latency.
