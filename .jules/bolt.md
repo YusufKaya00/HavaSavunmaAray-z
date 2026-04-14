@@ -1,0 +1,3 @@
+## 2024-04-14 - Shared Memory LOH Fragmentation
+**Learning:** High-frequency processing loops (like video frames at ~60fps) allocating >1MB byte arrays inside the loop cause severe Large Object Heap (LOH) fragmentation and trigger blocking Garbage Collector generation 2 collections in C#, starving CPU resources. Also, `MemoryMappedViewAccessor` instantiation within a tight loop involves expensive unmanaged handles.
+**Action:** Always pre-allocate large byte arrays (e.g. `byte[] rawBuffer = new byte[FrameWidth * FrameHeight * 3];`) and reuse them, along with unmanaged accessor handles (`CreateViewAccessor`), moving them *outside* the high-frequency `while (true)` processing loops.
