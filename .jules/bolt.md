@@ -1,0 +1,3 @@
+## 2024-05-24 - Large Object Heap Fragmentation in High-Frequency C# Loops
+**Learning:** Found a critical performance bottleneck specific to this C# WinForms application architecture. Allocating large byte arrays (e.g., ~1.2MB for `FrameWidth * FrameHeight * 3`) and creating `MemoryMappedViewAccessor` instances inside a high-frequency `while(true)` loop causes extreme GC pressure and Large Object Heap (LOH) fragmentation.
+**Action:** Always pre-allocate and reuse large byte arrays and `MemoryMappedViewAccessor` instances outside of high-frequency processing loops when dealing with shared memory and uncompressed video frames in C#.
