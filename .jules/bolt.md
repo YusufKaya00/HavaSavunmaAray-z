@@ -1,0 +1,3 @@
+## 2024-04-24 - Pre-allocating Shared Memory Buffers for Image Processing
+**Learning:** In high-frequency loop operations reading 1.2MB uncompressed video frames via `MemoryMappedFile`s, allocating large byte arrays (`byte[]`) triggers massive Large Object Heap (LOH) allocations and causes severe Garbage Collector (GC) pressure, fragmenting memory and causing micro-stutters.
+**Action:** Always pre-allocate large byte arrays and `MemoryMappedViewAccessor`s outside the processing loop (e.g. `while(true)`) to reuse the same memory chunk, drastically improving real-time video performance by sidestepping expensive GC collections.
