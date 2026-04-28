@@ -1,0 +1,3 @@
+## 2025-02-24 - Pre-allocating in MemoryMapped View Accessors for C# GC performance
+**Learning:** Pre-allocating `MemoryMappedViewAccessor` and large byte arrays (e.g. `rawBuffer` and `processedBuffer` which are ~1.2MB each) outside high-frequency `while (true)` loops prevents severe Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation when continuously reading ~60fps video frames from shared memory.
+**Action:** When working with shared memory processing and WinForms/C# video frames, avoid repeated allocations inside the loop block. Instantiate the view accessor and buffer array once, then reuse them in each iteration by calling `accessor.ReadArray()` repeatedly into the same buffer.
