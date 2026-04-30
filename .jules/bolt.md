@@ -1,0 +1,3 @@
+## 2025-04-30 - Prevent Large Object Heap (LOH) pressure in high-frequency shared memory access loops
+**Learning:** Instantiating `MemoryMappedViewAccessor` and 1.2MB uncompressed frame `byte[]` arrays inside a ~60 FPS loop creates immense Large Object Heap (LOH) pressure. These large objects are immediately garbage collected but rapidly fragment the LOH, causing deep GC pauses in C# performance-critical loops.
+**Action:** Always pre-allocate large `byte[]` buffers and reuse the same `MemoryMappedViewAccessor` instance outside of high-frequency `while` loops instead of creating new instances repeatedly.
