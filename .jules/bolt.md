@@ -1,0 +1,3 @@
+## 2025-05-15 - Prevent LOH Fragmentation in High-Frequency Shared Memory Read Loops
+**Learning:** In a C# WinForms app handling high-frequency (e.g., 60fps) uncompressed video frames (approx 1.2MB each) from shared memory via `MemoryMappedFile`, allocating large `byte[]` arrays and `MemoryMappedViewAccessor` instances inside the read loop causes severe Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation.
+**Action:** Always pre-allocate and reuse large byte arrays and `MemoryMappedViewAccessor` instances outside of high-frequency processing loops to stabilize memory usage and improve performance.
