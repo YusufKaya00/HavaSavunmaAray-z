@@ -1,0 +1,3 @@
+## 2025-01-20 - [Avoid Large Object Heap Fragmentation in WinForms Video Processing]
+**Learning:** High-frequency (e.g., 60fps) video processing applications using `MemoryMappedFile`s and C# WinForms suffer extreme GC pressure if large buffers (like uncompressed frames taking >900KB each) and ViewAccessors are allocated inside the continuous read loop. This fragments the Large Object Heap (LOH) and causes stuttering due to frequent Gen 2 collections.
+**Action:** Always hoist large array allocations (like raw frame buffers) and `MemoryMappedViewAccessor` creation *outside* of high-frequency polling/reading loops. Re-use pre-allocated buffers with `.ReadArray()` across iterations.
