@@ -1,0 +1,3 @@
+## 2024-05-24 - High-Frequency Shared Memory Array Allocations
+**Learning:** The application reads uncompressed video frames via memory-mapped files at high frequency (~60fps). Inside the while(true) loop of ReadSharedMemory(), it allocates new large byte arrays (new byte[FrameWidth * FrameHeight * 3], approx 1.2MB each) and creates new Bitmap objects per frame, leading to severe Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation.
+**Action:** Pre-allocate byte arrays, MemoryMappedViewAccessors, and potentially Bitmap objects outside the loop and reuse them to avoid continuous memory allocations.
