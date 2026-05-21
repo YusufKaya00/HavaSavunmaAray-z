@@ -1,0 +1,3 @@
+## 2024-06-25 - Avoid LOH Fragmentation in High-Frequency C# Loops
+**Learning:** Allocating large byte arrays (~900KB for 640x480 RGB frames) inside a `while(true)` high-frequency loop causes severe memory pressure and Large Object Heap (LOH) fragmentation in C#, degrading long-term memory performance and slowing down execution due to constant Garbage Collections.
+**Action:** Always pre-allocate large buffers (`byte[]`) and reuse `MemoryMappedViewAccessor` instances outside the fast loop to eliminate repeated memory allocations.
