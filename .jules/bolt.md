@@ -1,0 +1,3 @@
+## 2024-03-24 - Pre-allocating large byte arrays to avoid C# Large Object Heap (LOH) fragmentation
+**Learning:** Allocating large byte arrays (~1.2MB for 640x640x3 frames) inside a high-frequency `while (true)` loop causes extreme Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation. C# places arrays > 85KB on the LOH, which is not compacted by default, leading to degraded performance and memory bloat over time. Creating `MemoryMappedViewAccessor` instances per frame also unnecessarily adds overhead.
+**Action:** Always pre-allocate and reuse large byte arrays and `MemoryMappedViewAccessor` instances outside of high-frequency processing loops when working with shared memory image processing in WinForms/C# apps.
