@@ -1,3 +1,6 @@
 ## 2024-05-03 - C# Shared Memory Optimizations
 **Learning:** In C# applications reading uncompressed video frames (1.2MB each) at high frequencies (~60fps) from shared memory via `MemoryMappedFile`, instantiating large `byte[]` buffers and `CreateViewAccessor()` instances inside the processing loop causes severe Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation.
 **Action:** Always pre-allocate large byte arrays and `MemoryMappedViewAccessor` objects outside the `while (true)` loops and reuse them across iterations to maintain performance.
+## 2024-05-28 - WinForms High-Frequency UI Updates
+**Learning:** In C# WinForms applications, using synchronous `Invoke` inside a high-frequency background thread (like reading 60fps video frames from shared memory) causes the background thread to block and wait for the UI thread, severely degrading throughput and increasing stutter. Two separate `Invoke` calls for different UI elements double this context switching overhead.
+**Action:** Combine UI updates into a single block and use asynchronous `BeginInvoke` when the background thread doesn't need a return value from the UI, cutting context switches and preventing background thread blocking.
