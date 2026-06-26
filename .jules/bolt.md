@@ -1,3 +1,6 @@
 ## 2024-05-03 - C# Shared Memory Optimizations
 **Learning:** In C# applications reading uncompressed video frames (1.2MB each) at high frequencies (~60fps) from shared memory via `MemoryMappedFile`, instantiating large `byte[]` buffers and `CreateViewAccessor()` instances inside the processing loop causes severe Garbage Collection (GC) pressure and Large Object Heap (LOH) fragmentation.
 **Action:** Always pre-allocate large byte arrays and `MemoryMappedViewAccessor` objects outside the `while (true)` loops and reuse them across iterations to maintain performance.
+## 2024-06-26 - Flow Control in High-Frequency C# UI Updates
+**Learning:** Using synchronous `Invoke` inside a high-frequency background loop (like reading 60fps video frames from `MemoryMappedFile`) synchronously blocks the loop, and naively replacing it with `BeginInvoke` can flood the WinForms message queue, causing memory bloat and `OutOfMemoryException`.
+**Action:** When updating the UI from a high-frequency background thread in C# WinForms, always use asynchronous `BeginInvoke` combined with a thread-safe flow control mechanism (e.g., `Interlocked.CompareExchange` with an `isUpdatingUI` flag) to drop frames when the UI thread falls behind, thereby preventing queue flooding.
